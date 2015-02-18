@@ -113,14 +113,15 @@ Commands available listed below:
             self.transport.write('SUCCESS: %s FOUND\r\n' % filepath)
             f = os.open(filepath, os.O_RDONLY)
             self.setRawMode()
-            chunk = os.read(f, 1024)
+            chunk = os.read(f, 1)
             while chunk != '':
                 #self.transport.write('Read something\r\n')
                 self.transport.write(chunk)
-                chunk = os.read(f, 1024)
+                chunk = os.read(f, 1)
             os.close(f)
             self.setLineMode()
-            self.transport.write('TRANSFER COMPLETED\r\n')
+            self.transport.write('\r\n')
+            self.transport.write('ZIPPA\r\n')
         else:
             self.transport.write('ERROR: No file or access with path %s\r\n' % filepath)
             

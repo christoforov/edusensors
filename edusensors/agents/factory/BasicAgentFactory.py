@@ -23,7 +23,6 @@ class BasicAgentFactoryFromService(protocol.ClientFactory):
         self.service = service
         
     def doSomething(self, stuff):
-        print "doSomething, OINK?", stuff
         return self.service.my_func(stuff)
     
     def getName(self):

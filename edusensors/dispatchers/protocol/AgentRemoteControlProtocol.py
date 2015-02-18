@@ -31,16 +31,34 @@ class AgentRemoteControlProtocol(LineReceiver):
     def lineReceived(self, line):
         junkInBOL = re.compile('(^> )|(\r\n$)')
         line = junkInBOL.sub('', line)
-        self.output.append(line)
+        
         if self.currentCommand.startswith('FILE'):
+            ignoreCurrentLine = False
             if line.startswith('SUCCESS'):
                 print 'Transfer start'
                 self.isLineMode = False
-            else:
-                self.rawOutput.append(line)    
-            if line.startswith('TRANSFER COMPLETED'):
+                self.rawOutput = []
+                ignoreCurrentLine = True
+            
+            if line.startswith('ZIPPA'):
                 print 'Transfer finish'
                 self.isLineMode = True
+                
+                
+            if self.isLineMode == False and ignoreCurrentLine == False:
+                reason = ''
+                if self.isLineMode == False:
+                    reason = 'line mode OFF'
+                else:
+                    reason = 'ignore line OFF'
+                print '[#%s#TO FILE:##] %s' % (reason, line,) 
+                self.rawOutput.append(line)    
+        else:
+             self.output.append(line)
+         
+        
+        
+                
                 
         #print("receive:", line)
     #def dataReceived(self, data):
@@ -55,7 +73,7 @@ class AgentRemoteControlProtocol(LineReceiver):
     def connectionLost(self, reason=None):
         self.factory.output = self.output
         import os
-        f = os.open('/home/knell/dump.dat', os.O_WRONLY)
+        f = os.open('dump.tmp', os.O_WRONLY)
         for line in self.rawOutput:
             os.write(f, line)
         os.close(f)
