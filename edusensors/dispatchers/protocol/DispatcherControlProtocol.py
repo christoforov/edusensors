@@ -136,7 +136,6 @@ Commands available listed below:
             for line in output[1:-1]:
                 self.writeMultiline(line)
             
-            #self.transport.write("Agent \"%s\"[%s:%s] found! OK \r\n" % (agent['name'], agent['address'], agent['port']))
             self.transport.write('\r\n> ')
         
         name = ''

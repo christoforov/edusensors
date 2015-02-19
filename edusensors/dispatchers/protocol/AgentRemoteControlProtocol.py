@@ -52,11 +52,13 @@ class AgentRemoteControlProtocol(LineReceiver):
     def connectionLost(self, reason=None):
         self.factory.output = self.output
         import os
+        
         path = '/tmp/dump.tmp'
         #if not os.path.exists(path):
         #    f = os.open(path, os.O_CREAT)
         #    os.close(f)
             
+        os.remove(path)
         f = os.open(path, os.O_WRONLY | os.O_CREAT)
         for line in self.rawOutput:
             os.write(f, line)
