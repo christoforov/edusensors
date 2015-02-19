@@ -121,7 +121,7 @@ Commands available listed below:
             os.close(f)
             self.setLineMode()
             self.transport.write('\r\n')
-            self.transport.write('ZIPPA\r\n')
+            self.transport.write('EDUSENSORS_STOP\r\n')
         else:
             self.transport.write('ERROR: No file or access with path %s\r\n' % filepath)
             

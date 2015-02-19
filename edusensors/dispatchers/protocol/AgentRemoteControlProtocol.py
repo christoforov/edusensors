@@ -40,40 +40,24 @@ class AgentRemoteControlProtocol(LineReceiver):
                 self.rawOutput = []
                 ignoreCurrentLine = True
             
-            if line.startswith('ZIPPA'):
-                print 'Transfer finish'
+            if line.startswith('EDUSENSORS_STOP'):
+                #print 'Transfer finish'
                 self.isLineMode = True
                 
-                
             if self.isLineMode == False and ignoreCurrentLine == False:
-                reason = ''
-                if self.isLineMode == False:
-                    reason = 'line mode OFF'
-                else:
-                    reason = 'ignore line OFF'
-                print '[#%s#TO FILE:##] %s' % (reason, line,) 
                 self.rawOutput.append(line)    
         else:
-             self.output.append(line)
-         
-        
-        
+            self.output.append(line)
                 
-                
-        #print("receive:", line)
-    #def dataReceived(self, data):
-    #    print 
-        
-    def rawDataReceived(self, line):
-        import sys
-        sys.exit()
-        print 'RAW RAW RAW'
-        self.output.append('RawData ++')        
-    
     def connectionLost(self, reason=None):
         self.factory.output = self.output
         import os
-        f = os.open('dump.tmp', os.O_WRONLY)
+        path = '/tmp/dump.tmp'
+        #if not os.path.exists(path):
+        #    f = os.open(path, os.O_CREAT)
+        #    os.close(f)
+            
+        f = os.open(path, os.O_WRONLY | os.O_CREAT)
         for line in self.rawOutput:
             os.write(f, line)
         os.close(f)
