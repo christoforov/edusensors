@@ -16,8 +16,8 @@ class AgentRemoteControlProtocol(LineReceiver):
     def connectionMade(self):
         self.output = []
         for command in self.factory.commands:
-            self.currentCommand = command
-            if command.startswith('FILE'):
+            self.currentCommand = command.upper()
+            if self.currentCommand.startswith('FILE'):
                 self.isLineMode = False
             else:
                 self.isLineMode = True
