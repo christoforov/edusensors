@@ -48,13 +48,14 @@ The Dispatcher is listening to 20000 port and provides list of registred Agents 
 
 The Watcher is listening to 10501 port.
 List of supported functions:
+<ul>
 <li>CLOSE</li>
 <li>GET_PEER</li>
 <li>GET_HOST</li>
 <li>GET_NAME</li>
 <li>GET_NEWS</li>
 <li>MENU</li>
-
+</ul>
 
 <h3>How to install</h3>
 
