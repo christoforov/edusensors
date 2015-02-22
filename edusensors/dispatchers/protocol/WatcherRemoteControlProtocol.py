@@ -3,9 +3,9 @@
 from twisted.protocols.basic import LineReceiver
 from twisted.internet import defer
 import re
-#from factory.TestAgentFactory import TestAgentFactoryFromService
+#from factory.TestWatcherFactory import TestWatcherFactoryFromService
 
-class AgentRemoteControlProtocol(LineReceiver):
+class WatcherRemoteControlProtocol(LineReceiver):
     
     end = "Bye-Bye\r\n"
     output = []
@@ -31,7 +31,7 @@ class AgentRemoteControlProtocol(LineReceiver):
     def lineReceived(self, line):
         junkInBOL = re.compile('(^> )|(\r\n$)')
         line = junkInBOL.sub('', line)
-        
+        print 'lineReceived:',line
         if self.currentCommand.startswith('FILE'):
             ignoreCurrentLine = False
             if line.startswith('SUCCESS'):
@@ -57,7 +57,7 @@ class AgentRemoteControlProtocol(LineReceiver):
             #if not os.path.exists(path):
             #    f = os.open(path, os.O_CREAT)
             #    os.close(f)
-            if not os.path.exists(path):
+            if os.path.exists(path):
                 os.remove(path)
             f = os.open(path, os.O_WRONLY | os.O_CREAT)
             for line in self.rawOutput:

@@ -80,7 +80,7 @@ Commands available listed below:
         def parseBody(body):
             self.transport.write(body.decode('cp1251').encode('utf-8'))
             self.transport.write('\r\n>')
-            print body
+            #print body
         d = self.factory.getUrlContent('http://aspirantura.ifmo.ru/?page1=9', parseBody)
         #d.addCallback(parseBody)
         

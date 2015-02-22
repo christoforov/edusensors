@@ -26,7 +26,6 @@ Commands supported by the Agent:
 <li>GET_NAME</li>
 <li>SQL</li>
 <li>FILE</li>
-<li>CALL_AGENT_METHOD</li>
 <li>CLOSE</li>
 </ul>
 
@@ -38,9 +37,12 @@ The Dispatcher is listening to 20000 port and provides list of registred Agents 
 <li>GET_HOST</li>
 <li>GET_PEER</li>
 <li>REG_AGENT</li>
+<li>REG_WATCHER</li>
 <li>DEL_AGENT</li>
+<li>DEL_WATCHER</li>
 <li>GET_AGENTS</li>
 <li>CALL_AGENT_METHOD</li>
+<li>CALL_WATCHER_METHOD</li>
 <li>CLOSE</li>
 </ul>
 
