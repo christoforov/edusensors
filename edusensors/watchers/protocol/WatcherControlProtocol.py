@@ -1,8 +1,10 @@
+
 # -*- coding: utf-8 -*-
 
 from twisted.protocols.basic import LineReceiver
 from twisted.internet import defer
 #from factory.TestWatcherFactory import TestWatcherFactoryFromService
+import urllib2
 
 class WatcherControlProtocol(LineReceiver):
     
@@ -48,6 +50,11 @@ class WatcherControlProtocol(LineReceiver):
             return ('getName', [])
         elif cmd.startswith('GET_NEWS'):
             return ('getNews', [])
+        elif cmd.startswith('GET_URL'):
+            if len(args) == 1:
+                return ('readUrl', args[0])
+            else:
+                return ('printMenu', [])
         elif cmd.startswith('GET_HOST'):
             return ('getHost', [])
         elif cmd.startswith('CLOSE'):
@@ -64,6 +71,7 @@ Commands available listed below:
     - GET_HOST -- print host information
     - GET_NAME -- print name of this watcher
     - GET_NEWS -- print news from http://aspirantura.ifmo.ru/?page1=9
+    - READ_URL -- print content from URL
     - MENU     -- print this help'''
         self.writeMultiline(menu)
     
@@ -76,14 +84,23 @@ Commands available listed below:
         self.transport.write('Connection from %s:%d' % (addr.host, addr.port) )
     
     def getNews(self):
-        self.transport.write('Breaking News: Busted!')
+        '''
         def parseBody(body):
             self.transport.write(body.decode('cp1251').encode('utf-8'))
             self.transport.write('\r\n>')
             #print body
         d = self.factory.getUrlContent('http://aspirantura.ifmo.ru/?page1=9', parseBody)
-        #d.addCallback(parseBody)
-        
+        d.addCallback(parseBody)
+        '''
+        url = 'http://aspirantura.ifmo.ru/?page1=9'
+        self.readUrl(url)
+    
+    def readUrl(self, url):
+        print 'URL', url
+        response = urllib2.urlopen(url)
+        html = response.read()
+        self.writeMultiline(html)
+    
     
     def getHost(self):
         addr = self.transport.getHost()

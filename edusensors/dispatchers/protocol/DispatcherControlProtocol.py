@@ -230,6 +230,35 @@ Commands available listed below:
         df = react_func(agent, cmd)
         df.addCallback(write_to_transport)
     
+    '''
+    def remoteCallWatcherMethod(self, command):
+        name = ''
+        for watcher_name in self.watchers.keys():
+            if command.startswith(watcher_name) and len(name) < len(watcher_name):
+                name = watcher_name
+        
+        if name == '':
+            self.transport.write("Watcher \"%s\" not found in list\r\n" % (command,))
+            return
+        cmd = command.replace(name, '').strip()
+        
+        def cbResponse(response):
+            print 'cbRESPONSE:', response
+            pass
+        
+        def cbError(reason):
+            print 'cbError', reason
+            pass
+        
+        f = BasicWatcherClientFactory([command])
+        reactor.connectTCP(watcher['address'], int(watcher['port']), f)
+        
+        for d in f.defers:
+            d.addCallback(cbResponse)
+            d.addErrback(cbError) 
+        
+        pass
+    '''
     def remoteCallWatcherMethod(self, command):
         def react_func(watcher, command):
             f = BasicWatcherClientFactory([command])
